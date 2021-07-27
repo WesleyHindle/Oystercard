@@ -20,11 +20,9 @@ describe Oystercard do
   end
 
  
-
-
-  describe "#deduct" do 
+  describe "#deduct" do  #This test is now the same as the 'expects the balance to change according to the fare when you touch out'    test
     it 'deducts value spent from the balance' do 
-      expect { subject.deduct 10 }.to change {subject.balance}.by -10
+      expect { subject.touch_out }.to change {subject.balance}.by (-Oystercard::MIN_BALANCE)
     end
   end
 
@@ -50,7 +48,10 @@ describe Oystercard do
     expect([true, false]).to include subject.in_journey
   end
  
-
+  it 'expects the balance to change according to the fare when you touch out' do 
+    subject.touch_out
+    expect{ subject.touch_out }.to change {subject.balance }.by (-Oystercard::MIN_BALANCE) 
+  end 
   
 
 end
