@@ -27,31 +27,45 @@ describe Oystercard do
   end
 
   describe "#touch_in" do 
+
+  let(:station){ double :station }
+
     it 'states whether the user has "touched in" or not.' do 
       subject.top_up(1)
-      expect(subject.touch_in).to eql true
+      expect(subject.touch_in(station)).to eql true
     end  
 
     it 'allows the user to "touch_in" if there is at least £1 balance' do
       subject.top_up(0.5)
-      expect{subject.touch_in}.to raise_error("Can't touch in, balance under £1")
+      expect{subject.touch_in(station)}.to raise_error("Can't touch in, balance under £1")
     end 
+
+    it 'stores the entry station' do
+      subject.top_up(2)
+      subject.touch_in(station)
+      expect(subject.entry_station).to eq station
+    end
   end
 
   describe "#touch_out" do 
     it 'states whether the user has "touched out" or not.' do 
-      expect(subject.touch_out).to eql false
+      expect(subject.touch_out).to eql nil
     end 
   end 
 
   it 'states if the user is "in journey" or not. ' do  
-    expect([true, false]).to include subject.in_journey
+    subject.top_up(1)
+    subject.touch_in("charring cross")
+    expect(subject.in_journey?).to be_truthy
   end
  
   it 'expects the balance to change according to the fare when you touch out' do 
     subject.touch_out
-    expect{ subject.touch_out }.to change {subject.balance }.by (-Oystercard::MIN_BALANCE) 
+    expect{ subject.touch_out }.to change {subject.balance }.by (-Oystercard::MIN_BALANCE) #subject.touch_out calls the deduct method which affects the @balance. There is no method called .method we can use expect on.
   end 
-  
+ 
+  let(:station){ double :station }
+
+
 
 end
