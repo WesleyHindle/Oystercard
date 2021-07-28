@@ -6,7 +6,7 @@ class Oystercard
   def initialize
     @balance = 0
     @max_balance = 90
-    @in_journey = false 
+    #@in_journey = false 
     @entry_station = entry_station
   end
   
@@ -18,7 +18,7 @@ class Oystercard
   def touch_in(entry_station)
     fail "Can't touch in, balance under £1" if @balance < MIN_BALANCE
     @entry_station = entry_station
-    @in_journey = true
+    #@in_journey = true
   end
 
   def in_journey?  
