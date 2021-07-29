@@ -38,3 +38,5 @@ class Oystercard
     @balance -= cost
   end  
 end  
+
+#station = {zone: '1', staton_name: "Charring Cross"}
